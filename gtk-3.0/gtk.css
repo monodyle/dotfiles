@@ -1,0 +1,22 @@
+VteTerminal,
+TerminalScreen,
+vte-terminal {
+  padding: 16px 24px;
+  -vteterminal-inner-border: 16px 24px;
+}
+
+.titlebar {
+  background: #282a36;
+  border: none;
+  box-shadow: none;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  min-height: 0;
+}
+
+.titlebar button {
+  background: #282a36;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  min-height: 0;
+}
