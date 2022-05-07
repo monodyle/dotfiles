@@ -1,0 +1,1 @@
+/home/monody/.fzf/shell/key-bindings.fish

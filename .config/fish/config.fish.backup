@@ -1,0 +1,29 @@
+set fish_greeting
+set DENO_INSTALL /home/monody/.deno
+set JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+set ANDROID_HOME $HOME/Android
+set -gx PATH $ANDROID_HOME/emulator $ANDROID_HOME/tools $ANDROID_HOME/tools/bin $ANDROID_HOME/cmdline-tools/latest $ANDROID_HOME/cmdline-tools/latest/bin $ANDROID_HOME/platform-tools /home/monody/.local/bin /usr/local/go/bin $DENO_INSTALL/bin $HOME/.cargo/bin $PATH
+
+# tauri
+set -x DISPLAY (powershell.exe -c ipconfig | grep -A4 WSL | tail -1 | awk '{ print $NF }' | tr -d '\r'):0 
+set -x LIBGL_ALWAYS_INDIRECT 1
+
+# alias
+alias c="clear"
+alias coding="cd $HOME/coding"
+alias ls="exa"
+alias vi="nvim"
+alias bat="batcat"
+alias prv="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+
+function vs --argument-names "path"
+    if test -n "$path"
+        code $path
+    else
+        code .
+    end
+end
+
+# Generated for envman. Do not edit.
+test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
+
