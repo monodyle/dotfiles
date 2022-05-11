@@ -4,7 +4,5 @@ pkg/**
 !pkg/fish-spec
 !pkg/fish-spec/**
 
-themes/**
-
 .DS_Store
 **/.DS_Store
