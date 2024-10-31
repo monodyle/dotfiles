@@ -56,7 +56,7 @@ config.colors = {
     background = '#121212',
 
     cursor_fg = '#222222',
-    selection_fg = '#222222',
+    selection_fg = 'rgba(219,215,202,0.93)',
     selection_bg = 'rgba(238, 238, 238, 0.094)',
 
     scrollbar_thumb = 'rgba(222, 220, 213, 0.063)',
