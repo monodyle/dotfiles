@@ -1,32 +1,20 @@
 set fish_greeting
-set -gx PATH /home/monody/.local/bin /usr/local/go/bin $HOME/.cargo/bin $PATH
 
-# set -x BROWSER /mnt/c/Program\ Files/Firefox\ Nightly/firefox.exe
+set -gx PATH $HOME/.local/bin $HOME/.cargo/bin $PATH
 
-# tauri
-# set -x DISPLAY (powershell.exe -c ipconfig | grep -A4 WSL | tail -1 | awk '{ print $NF }' | tr -d '\r'):0 
-# set -x LIBGL_ALWAYS_INDIRECT 1
-
-# alias
-alias c="clear"
-# alias coding="cd $HOME/coding"
-alias ls="exa"
-alias vi="nvim"
-alias bat="batcat"
-alias prv="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-
-function vs --argument-names "path"
-    if test -n "$path"
-        code $path
-    else
-        code .
-    end
+if status is-interactive
+# Commands to run in interactive sessions can go here
 end
 
-# Generated for envman. Do not edit.
-test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
+alias z "zoxide"
+alias c "clear"
+alias ls "exa"
+alias vi "nvim"
+alias prv "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
-# The next line updates PATH for the Google Cloud SDK.
-# if [ -f '/home/monody/google-cloud-sdk/path.fish.inc' ]; . '/home/monody/google-cloud-sdk/path.fish.inc'; end
+alias cs "open $argv -a 'Cursor'"
+alias vs "open $argv -a 'Visual Studio Code'"
 
-# set -x VIRTUAL_ENV_DISABLE_PROMPT 1
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH
+set -gx VOLTA_FEATURE_PNPM 1
