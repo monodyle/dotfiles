@@ -7,22 +7,51 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
+wezterm.on('update-right-status', function(window)
+    -- "Wed Mar 3 08:14"
+    local date = wezterm.strftime '%a %b %-d %H:%M '
+
+    local bat = ''
+    for _, b in ipairs(wezterm.battery_info()) do
+        bat = 'Power: ' .. string.format('%.0f%%', b.state_of_charge * 100)
+    end
+
+    window:set_right_status(wezterm.format {
+        { Text = bat .. ' | ' .. date },
+    })
+end)
+
 -- config.color_scheme = 'rose-pine-moon'
 config.window_decorations = "RESIZE"
-config.font = wezterm.font("Martian Mono", { weight = "DemiLight" })
-config.font_size = 15.0
+config.font = wezterm.font("PragmataPro VF Mono Liga")
+config.font_size = 18.0
 
 config.window_padding = {
-    left = 24,
-    right = 24,
-    top = 24,
-    bottom = 16
+    left = 48,
+    right = 48,
+    top = 64,
+    bottom = 24
 }
 
 config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 config.pane_select_font_size = 36
+
+config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
+    {
+        key = "e",
+        mods = "CMD|SHIFT",
+        action = action.PromptInputLine {
+            description = "Enter name for this tab",
+            action = wezterm.action_callback(function(window, pane, line)
+              if line then
+                -- Set the title of the active tab
+                window:active_tab():set_title(line)
+              end
+            end)
+        }
+    },
     {
         key = "b",
         mods = "CMD",
@@ -74,16 +103,18 @@ config.keys = {
     }
 }
 
+-- hehe
+
 config.colors = {
-    foreground = "rgba(219, 215, 202, 0.93)",
-    background = "#121212",
+    foreground = "#121212",
+    background = "#f1f0e9",
     cursor_fg = "#222222",
-    selection_fg = "rgba(219,215,202,0.93)",
-    selection_bg = "rgba(238, 238, 238, 0.094)",
+    selection_fg = "rgba(18, 18, 18, 0.93)",
+    selection_bg = "rgba(18, 18, 18, 0.094)",
     scrollbar_thumb = "rgba(222, 220, 213, 0.063)",
     split = "#252525",
-    ansi = {"#393a34", "#cb7676", "#4d9375", "#e6cc77", "#6394bf", "#d9739f", "#5eaab5", "#dbd7ca"},
-    brights = {"#777777", "#cb7676", "#4d9375", "#e6cc77", "#6394bf", "#d9739f", "#5eaab5", "#ffffff"},
+    ansi = {"#393a34", "#cb7676", "#4d9375", "#b07d49", "#6394bf", "#d9739f", "#5eaab5", "#dbd7ca"},
+    brights = {"#777777", "#cb7676", "#4d9375", "#b07d49", "#6394bf", "#d9739f", "#5eaab5", "#ffffff"},
     indexed = {
         [136] = "#bd976a"
     },
@@ -92,7 +123,7 @@ config.colors = {
         Color = "#292929"
     },
     copy_mode_active_highlight_fg = {
-        Color = "rgba(219, 215, 202, 0.93)"
+        Color = "#121212"
     },
     copy_mode_inactive_highlight_bg = {
         Color = "#4d9375"
@@ -113,34 +144,33 @@ config.colors = {
         Color = "#222222"
     },
     tab_bar = {
-        background = "#121212",
+        background = "#F1F0E9",
         inactive_tab = {
-            bg_color = "#121212",
-            fg_color = "#393a34"
+            bg_color = "#F1F0E9",
+            fg_color = "#a6a5a2"
         },
         inactive_tab_hover = {
-            bg_color = "#121212",
-            fg_color = "rgba(219, 215, 202, 0.93)"
+            bg_color = "#F1F0E9",
+            fg_color = "rgba(57, 58, 52, 0.9)"
         },
         new_tab = {
-            bg_color = "#121212",
+            bg_color = "#F1F0E9",
             fg_color = "#393a34"
         },
         new_tab_hover = {
-            bg_color = "#121212",
-            fg_color = "rgba(219, 215, 202, 0.93)"
+            bg_color = "#F1F0E9",
+            fg_color = "#121212"
         },
         active_tab = {
-            bg_color = "#121212",
-            fg_color = "rgba(219, 215, 202, 0.93)"
+            bg_color = "#F1F0E9",
+            fg_color = "#121212"
         }
     }
 }
 
-config.window_background_opacity = 0.96
 config.inactive_pane_hsb = {
-    saturation = 0.75,
-    brightness = 0.5
+    saturation = 0.95,
+    brightness = 0.95
 }
 
 return config
