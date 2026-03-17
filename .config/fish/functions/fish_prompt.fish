@@ -1,12 +1,3 @@
-# name: gnuykeaj
-# ---------------
-# Based on clearance, which is based off idan.
-# 1 line minimal, beautiful version of clearance.
-# Display the following bits on the left:
-# - Virtualenv name (if applicable, see https://github.com/adambrenecki/virtualfish)
-# - Current directory name
-# - Git branch and dirty state (if inside a git repo)
-
 function _git_branch_name
   echo (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
 end
