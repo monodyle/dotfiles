@@ -1,5 +1,3 @@
-#!/bin/bash
-
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt-add-repository ppa:fish-shell/release-4
 sudo add-apt-repository ppa:neovim-ppa/unstable
@@ -15,7 +13,12 @@ sudo apt install -y \
 	wget \
 	fish \
 	neovim \
-	unzip
+	unzip \
+	clang \
+	libclang-dev \
+	pkg-config \
+	libssl-dev \
+	jq
 
 echo $(which fish) | sudo tee -a /etc/shells
 chsh -s $(which fish)
@@ -42,9 +45,12 @@ mise use -g fd@latest
 
 cargo install --locked bat
 set -Ux BAT_THEME "ansi"
-cargo install exa
+cargo install --locked exa
+cargo install --locked tree-sitter-cli
 
 fisher install PatrickF1/fzf.fish
+
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 fisher install jethrokuan/z
 
 wget -P ~/.config/fish/functions/ https://raw.githubusercontent.com/monodyle/dotfiles/refs/heads/master/.config/fish/functions/fish_prompt.fish
