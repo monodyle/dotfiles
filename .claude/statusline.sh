@@ -2,15 +2,29 @@
 set -euo pipefail
 
 # shows: [cwd/worktree (git_branch_name [±] [⇣])] [model] [remaining_context] [session_cost]
+# Colors: folder+branch=blue, model=red, context=default(>=70%)/yellow(<70%)/red(<35%), cost=green
 
 input=$(cat)
+
+# ANSI colors
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+RESET='\033[0m'
 
 # Extract values
 MODEL=$(echo "$input" | jq -r '.model.display_name // "?"')
 CWD=$(echo "$input" | jq -r '.workspace.current_dir // "."')
 PROJECT_DIR=$(echo "$input" | jq -r '.workspace.project_dir // "."')
 REMAINING=$(echo "$input" | jq -r '.context_window.remaining_percentage // 100')
-CTX_USED=$(echo "$input" | jq -r '.context_window.current_usage.input_tokens // empty')
+CTX_USED=$(echo "$input" | jq -r '
+  if .context_window.current_usage != null then
+    ((.context_window.current_usage.input_tokens // 0)
+     + (.context_window.current_usage.cache_read_input_tokens // 0)
+     + (.context_window.current_usage.cache_creation_input_tokens // 0))
+    | tostring
+  else empty end')
 CTX_TOTAL=$(echo "$input" | jq -r '.context_window.context_window_size // empty')
 COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
 
@@ -68,6 +82,15 @@ fi
 # Round remaining percentage
 REMAINING_INT=$(printf "%.0f" "$REMAINING")
 
+# Pick context color based on remaining percentage
+if [[ "$REMAINING_INT" -ge 70 ]]; then
+    CTX_COLOR="$RESET"
+elif [[ "$REMAINING_INT" -ge 35 ]]; then
+    CTX_COLOR="$YELLOW"
+else
+    CTX_COLOR="$RED"
+fi
+
 # Format context window size (e.g. 200k)
 CTX_DISPLAY=""
 if [[ -n "$CTX_TOTAL" ]]; then
@@ -83,5 +106,5 @@ fi
 # Format cost to 2 decimal places
 COST_FORMATTED=$(printf "%.2f" "$COST")
 
-# Assemble the statusline
-echo "${DIR_DISPLAY} · ${MODEL} · ${REMAINING_INT}%${CTX_DISPLAY} · \$${COST_FORMATTED}"
+# Assemble the statusline with colors
+printf "${DIR_DISPLAY} · ${MODEL} · ${CTX_COLOR}${REMAINING_INT}%${CTX_DISPLAY}${RESET} · \$${COST_FORMATTED}${RESET}\n"
